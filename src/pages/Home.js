@@ -1,6 +1,7 @@
 import { FaTachometerAlt, FaUserCircle } from 'react-icons/fa'
 import { BsFillFileEarmarkBarGraphFill } from 'react-icons/bs'
 import { AiFillPieChart, AiOutlineCaretDown, AiOutlineFolderAdd } from 'react-icons/ai'
+import {BiPowerOff} from 'react-icons/bi';
 import { MdCurrencyExchange } from 'react-icons/md'
 import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Dashboard from './inside/Dashboard';
@@ -28,6 +29,7 @@ export const Home = () => {
         const tokken = localStorage.getItem('tokken')
         const response = await axios.post("http://localhost:4000/delete/tokken", { tokken })
         console.log(response.data)
+        console.log('life')
         if (response.data == 'success') {
             localStorage.removeItem('tokken')
             localStorage.removeItem('role')
@@ -61,12 +63,12 @@ export const Home = () => {
                             </div>
                             <div className='d-flex '>
                                 <Link to='/Profile' className='btn d-flex text-white' style={{ gap: '10px' }}>
-                                    <FaUserCircle className='fs-2' />
-                                    <div className='text-uppercase fw-bold'>
+                                    <FaUserCircle className='fs-4' />
+                                    <div className=' fw-bold'>
                                         {user}
                                     </div>
                                 </Link>
-                                <button onClick={logout} className='btn btn-danger px-2 py-1'>logout</button>
+                                <span onClick={logout} className='  text-white fs-4' style={{cursor:'pointer'}}><BiPowerOff/></span>
                             </div>
                         </div>
                     </div>
@@ -78,7 +80,7 @@ export const Home = () => {
                                 <div className='d-flex flex-column'>
                                     <Link to='/'>
                                         <div className='d-flex'>
-                                            <FaTachometerAlt className='' style={{ fontSize: '30px' }} />
+                                            <FaTachometerAlt className='fs-3'/>
                                             <div className='d-flex ps-3 d-none d-md-block flex-column justify-content-center white fw-bold'>
                                                 Dashboard
                                             </div>
@@ -86,7 +88,7 @@ export const Home = () => {
                                     </Link>
                                     <Link to='/Stock'>
                                         <div className='d-flex'>
-                                            <BsFillFileEarmarkBarGraphFill className='' style={{ fontSize: '30px' }} />
+                                            <BsFillFileEarmarkBarGraphFill className='fs-3' />
                                             <div className='d-flex ps-3 d-none d-md-block flex-column justify-content-center white fw-bold'>
                                                 Stock
                                             </div>
@@ -94,7 +96,7 @@ export const Home = () => {
                                     </Link>
                                     <Link to='/Sales'>
                                         <div className='d-flex'>
-                                            <MdCurrencyExchange className='' style={{ fontSize: '30px' }} />
+                                            <MdCurrencyExchange className='fs-3'/>
                                             <div className='d-flex ps-3 d-none d-md-block flex-column justify-content-center fw-bold'>
                                                 Sales
                                             </div>
@@ -102,7 +104,7 @@ export const Home = () => {
                                     </Link>
                                     <Link to='/Reports'>
                                         <div className='d-flex'>
-                                            <AiFillPieChart className='' style={{ fontSize: '30px' }} />
+                                            <AiFillPieChart className='fs-3' />
                                             <div className='d-flex ps-3 d-none d-md-block flex-column justify-content-center white fw-bold'>
                                                 Reports
                                             </div>
@@ -110,7 +112,7 @@ export const Home = () => {
                                     </Link>
                                     <Link to='/Edit'>
                                         <div className='d-flex'>
-                                            <AiOutlineFolderAdd className='' style={{ fontSize: '30px' }} />
+                                            <AiOutlineFolderAdd className='fs-3'/>
                                             <div className='d-flex ps-3 d-none d-md-block flex-column justify-content-center white fw-bold'>
                                                 Edit
                                             </div>

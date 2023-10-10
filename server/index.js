@@ -4,18 +4,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const corse = require('cors');
 const multer = require('multer');
-const mysql = require('mysql')
 const imageModel = require('./models');
+const { DeleteProduct, GetRecords, Auth, GetProd } = require('./funtions');
+const { db } = require('./database');
+const CreateTablesIfNotExits = require('./databaseTabels/CreateTables');
 
 const corseOrigin = 'http://localhost:3000';
 
-
-const db  = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '12345',
-    database: 'productsfive'
-})
 
 //connect
 db.connect((err) => {
@@ -23,7 +18,11 @@ db.connect((err) => {
         throw err
     }
     console.log('mysql has connected')
+    CreateTablesIfNotExits();
 })
+
+
+
 
 app.use(express.static(__dirname + '../..'));
 app.use(corse({
@@ -161,15 +160,7 @@ if(resp != ''){
 
 
 //getting records from the database......all of them?
-app.get('/getrecords', (req, res) => {
-    let sql = 'SELECT * FROM stockrecord'
-    let query = db.query(sql, (err, result) => {
-        if(err){
-            throw err;
-        }
-        res.send(result)
-    })
-})
+app.get('/getrecords', GetRecords)
 
 
 app.get('/deleterecords', (req, res) => {
@@ -179,32 +170,9 @@ app.get('/deleterecords', (req, res) => {
 })
 
 //this secton recieves the tokken and then compares it with the one in the database
-app.post('/users/auth', (req, res) => {
-    
-    
-            let tokken = req.body.value
-            let sql = `SELECT * FROM tokken WHERE tokken = '${tokken}'`
-            let query = db.query(sql, (err, response) => {
-                if(response != ''){
-                    let tokkens = response[0].tokken
-                    if(err){
-                        throw err
-                    }
-                    if(tokkens == tokken){
-                        res.send('true')
-                    }
-                 } else {
-                    console.log('nothomh')
-                    res.send('ok')
-                 }
+app.post('/users/auth', Auth)
 
-            })
-    // } else {
-    //     console.log('false')
-    //     res.send('error')
-    // }
 
-})
 //delete tokken when a user logs out
 app.post("/delete/tokken", (req, res) => {
     let tokken = req.body.tokken;
@@ -223,15 +191,7 @@ app.post("/delete/tokken", (req, res) => {
 
 
 //sending data to the client........all the data from this specific table containing products
-app.get('/getData', (req, res) => {
-    let sql  = 'SELECT * FROM productdetails';
-    let query = db.query(sql, (err, results) => {
-        if(err){
-            throw err;
-        }
-        res.send(results)
-    })
-})
+app.get('/getData', GetProd)
 
 
 
@@ -249,18 +209,11 @@ let id = req.params.id
 
 
 //this route is for deleting specifc products by id from client
-app.get('/delete/:id', (req, res) => {
-    let id = req.params.id;
-    let sql = `DELETE FROM productdetails WHERE productID = ${id}`
-    let query = db.query(sql, (err, result) => {
-        if(err){
-            throw err
-        }
-        res.send(result)
-        console.log('deleted!')
-    })
-})
+app.get('/delete/:id', DeleteProduct)
 
+
+
+//this is for the addition 
 
 //this is port at 4000
 app.listen('4000', () => {
