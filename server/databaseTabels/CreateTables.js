@@ -32,6 +32,14 @@ const CreateTablesIfNotExits = () => {
             console.log('users TABLE CEATED')
         }
     })
+
+    db.query('CREATE TABLE IF NOT EXISTS orders (orderDate varchar(255),client varchar(255), approvedID varchar(255), quantity varchar(255), orderformID varchar(255), orderid int AUTO_INCREMENT PRIMARY KEY, productId varchar(255), approvedDate varchar(255), creatorID varchar(255), status varchar(255) )', [], (err, result) => {
+        if(err){
+            console.log(err)
+        } else{
+            console.log('order table created TABLE CEATED')
+        }
+    })
 }
 
 

@@ -33,3 +33,15 @@
  #deleteBtn {
    display: none;
  }
+
+
+ .ordertable tr:nth-child(even) {
+   background-color: #D6EEEE;
+ }
+
+ .ordertable th, td {
+   padding: 10px 20px;
+ }
+.ordertable table{
+   width: 100%;
+}

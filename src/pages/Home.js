@@ -1,5 +1,5 @@
 import { FaTachometerAlt, FaUserCircle } from 'react-icons/fa'
-import { BsFillFileEarmarkBarGraphFill } from 'react-icons/bs'
+import { BsFillCartCheckFill, BsFillFileEarmarkBarGraphFill } from 'react-icons/bs'
 import { AiFillPieChart, AiOutlineCaretDown, AiOutlineFolderAdd } from 'react-icons/ai'
 import {BiPowerOff} from 'react-icons/bi';
 import { MdCurrencyExchange } from 'react-icons/md'
@@ -16,6 +16,7 @@ import { useContext } from 'react';
 import AuthContext from './inside/context/AuthProvider';
 import MyProfile from './inside/users/userProfile';
 import axios from 'axios';
+import Orders from './inside/Orders';
 
 
 export const Home = () => {
@@ -118,6 +119,14 @@ export const Home = () => {
                                             </div>
                                         </div>
                                     </Link>
+                                    <Link to='/Orders'>
+                                        <div className='d-flex'>
+                                            <BsFillCartCheckFill className='fs-3'/>
+                                            <div className='d-flex ps-3 d-none d-md-block flex-column justify-content-center white fw-bold'>
+                                                Order
+                                            </div>
+                                        </div>
+                                    </Link>
 
                                 </div>
                             </div>
@@ -131,6 +140,7 @@ export const Home = () => {
                                     <Route path='/Sales' element={<Sales />} />
                                     <Route path='/Reports' element={<Reports />} />
                                     <Route path='/Profile' element={<MyProfile />} />
+                                    <Route path='/Orders' element={<Orders />} />
 
 
                                     {/* this section contains routes specific to the data entry clerk */}

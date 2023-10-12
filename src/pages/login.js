@@ -45,6 +45,7 @@ const Login = () => {
                 localStorage.setItem('tokken', data.token)
                 localStorage.setItem('username', data.username)
                 localStorage.setItem('role', data.role)
+                localStorage.setItem('id', data.userid)
 
                 setAuth(true)
             }

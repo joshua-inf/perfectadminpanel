@@ -4,12 +4,14 @@ import { BsArrowRight } from 'react-icons/bs'
 import { MdOutlineNumbers } from 'react-icons/md'
 import { BiUserPin } from 'react-icons/bi'
 import { renderHook } from "@testing-library/react";
+import { HashLoader } from "react-spinners";
 
 
 const CreateOrder = () => {
     const [data, setData] = useState()
     const [error, setError] = useState('none')
     const [success, setSuccess] = useState('')
+    const [fullscreenLoader, setFullscreenLoader] = useState(false)
 
 
     async function setingData() {
@@ -25,16 +27,21 @@ const CreateOrder = () => {
 
 
 
-    const SendData = async (e) => {
+    const SendData = (e) => {
+        setFullscreenLoader(true)
         e.preventDefault()
         const formData = new FormData(e.currentTarget);
-        const response = await axios.post('http://localhost:4000/formData', formData);
-        if (response.data == 'exits') {
-            setError(response.data)
-            setingData()
-        } else if (response) {
-            setError(response.data)
-        }
+        axios.post('http://localhost:4000/addOrder', formData).then((response) => {
+            if (response.data == 'exits') {
+                setError(response.data)
+                setingData()
+            } else if (response) {
+                setError(response.data)
+            } else {
+                setError('eh')
+            }
+        }).finally(() => setFullscreenLoader(false))
+
     }
 
     const renderError = () => {
@@ -47,13 +54,13 @@ const CreateOrder = () => {
                 </div>
             )
         }
-        if (error == 'exits') {
+        if (error == 'done') {
             return (<div className="py-2">
                 <div className="bg-success p-2 text-uppercase fw-bold text-center text-white">
                     record added successfully
                 </div>
             </div>)
-        }
+        } 
     }
     const checkdata = () => {
         if (data) {
@@ -85,8 +92,18 @@ const CreateOrder = () => {
     return (
         <>
             <div>
+            {fullscreenLoader ? 
+            <div style={{position:'fixed', top:0, bottom:0, left:0, right: 0, backgroundColor:'rgba(0,0,0,0.5)', zIndex:3}}>
+                <div style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100%'}}>
+                    <HashLoader color="#36d7b7" />
+                </div>
+            </div>
+            :
+            <></>
+            }
                 <form onSubmit={SendData}>
                     {renderError()}
+                    <input required type="text" name='userID' value={1} class="form-control d-none" placeholder="DDX105" aria-label="Amount" aria-describedby="basic-addon1" />
                     <div className="py-5 text-white fw-bold shadow bg-secondary" >
                         <div className="row">
                             <div className="col-8">
@@ -104,7 +121,7 @@ const CreateOrder = () => {
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text rounded-0" id="basic-addon1">Client Name or ID</span>
                                             </div>
-                                            <input required type="text" name='formID' class="form-control" placeholder="add name or id here" aria-label="Amount" aria-describedby="basic-addon1" />
+                                            <input required type="text" name='ClientName' class="form-control" placeholder="add name or id here" aria-label="Amount" aria-describedby="basic-addon1" />
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +151,7 @@ const CreateOrder = () => {
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text rounded-0" id="basic-addon1">Order Form ID</span>
                                                 </div>
-                                                <input required type="text" name='formID' class="form-control" placeholder="DDX105" aria-label="Amount" aria-describedby="basic-addon1" />
+                                                <input required type="text" name='orderformID' class="form-control" placeholder="DDX105" aria-label="Amount" aria-describedby="basic-addon1" />
                                             </div>
                                         </div>
                                     </div>

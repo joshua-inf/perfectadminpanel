@@ -11,7 +11,7 @@ const DeleteProduct = (req, res) => {
     let id = req.params.id;
     let sql = `DELETE FROM productdetails WHERE productID = ${id}`
     let query = db.query(sql, (err, result) => {
-        if(err){
+        if (err) {
             throw err
         }
         res.send(result)
@@ -23,7 +23,7 @@ const DeleteProduct = (req, res) => {
 const GetRecords = (req, res) => {
     let sql = 'SELECT * FROM stockrecord'
     let query = db.query(sql, (err, result) => {
-        if(err){
+        if (err) {
             throw err;
         }
         res.send(result)
@@ -32,41 +32,81 @@ const GetRecords = (req, res) => {
 
 
 const Auth = (req, res) => {
-    
-    
+
+
     let tokken = req.body.value
     let sql = `SELECT * FROM tokken WHERE tokken = '${tokken}'`
     let query = db.query(sql, (err, response) => {
-        if(response != ''){
+        if (response != '') {
             let tokkens = response[0].tokken
-            if(err){
+            if (err) {
                 throw err
             }
-            if(tokkens == tokken){
+            if (tokkens == tokken) {
                 res.send('true')
             }
-         } else {
+        } else {
             console.log('nothomh')
             res.send('ok')
-         }
+        }
 
     })
-// } else {
-//     console.log('false')
-//     res.send('error')
-// }
+    // } else {
+    //     console.log('false')
+    //     res.send('error')
+    // }
 
 }
 
 
 const GetProd = (req, res) => {
-    let sql  = 'SELECT * FROM productdetails';
+    let sql = 'SELECT * FROM productdetails';
     let query = db.query(sql, (err, results) => {
-        if(err){
+        if (err) {
             throw err;
         }
         res.send(results)
     })
 }
 
-module.exports = {AddOrder, DeleteProduct, GetRecords, Auth, GetProd};
+
+const addOrder2 = (req, res) => {
+
+    let orderDate = req.body.date
+    let client = req.body.ClientName
+    let approvedID = 'none'
+    let quantity = req.body.Quantity
+    let orderformID = req.body.orderformID
+    let productId = req.body.productID
+    let creatorID = req.body.userID
+    let status = 'intransit'
+
+    let values = [orderDate, client, approvedID, quantity, orderformID, productId, creatorID, status]
+    if(orderDate && client && approvedID && quantity && orderformID && productId && creatorID && status){
+        let sql = 'INSERT INTO orders (orderDate, client, approvedID, quantity, orderformID, productId, creatorID, status) values (?,?,?,?,?,?,?,?)'
+        let query = db.query(sql, values, (err, result) => {
+            if(err){
+                console.log(err)
+            } else {
+                res.send('done')
+                console.log('done')
+            }
+        })
+    }
+}
+
+
+const GetOrders = (req, res) => {
+
+    let sql = 'SELECT * FROM orders'
+        let query = db.query(sql, (err, results) => {
+            if(err){
+                console.log(err)
+            } else {
+                res.send(results)
+                console.log('done')
+            }
+        })
+}
+
+module.exports = { AddOrder, DeleteProduct, GetRecords, Auth, GetProd, addOrder2, GetOrders };

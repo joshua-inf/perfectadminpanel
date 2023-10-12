@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const corse = require('cors');
 const multer = require('multer');
 const imageModel = require('./models');
-const { DeleteProduct, GetRecords, Auth, GetProd } = require('./funtions');
+const { DeleteProduct, GetRecords, Auth, GetProd, addOrder, addOrder2, GetOrders } = require('./funtions');
 const { db } = require('./database');
 const CreateTablesIfNotExits = require('./databaseTabels/CreateTables');
 
@@ -64,7 +64,6 @@ app.post('/upload-image', imageUpload.single('image'), (req, res) => {
     const nameofproduct = req.body.nameofproduct;
     const size = req.body.size;
     const image = req.file.filename; 
-    console.log(req.body)
     let query = db.query('insert into productdetails(productName, productSize, productImagename) values(?,?,?)', [nameofproduct, size, image], (err, result) => {
         if(err){
             console.log(err)
@@ -104,6 +103,7 @@ app.post('/user', async (req, res) => {
                 const username = results[0].username;
                 const password = results[0].password;
                 const role = results[0].role;
+                const userid = results[0].userid;
                 
                 //this is an array created to store the info stored in the constant(response from database)
                 const userCredentials = {username, password}
@@ -112,7 +112,7 @@ app.post('/user', async (req, res) => {
                 const token  = jwt.sign(userCredentials, 'twenty')
 
                 //resonse for the client
-                let response = {token, username, role}
+                let response = {token, username, role, userid}
                 res.send(response)
                 console.log(req.body)
                 
@@ -124,7 +124,6 @@ app.post('/user', async (req, res) => {
         })
     }
 })
-
 
 
 
@@ -155,9 +154,6 @@ if(resp != ''){
     })
     
 })
-
-
-
 
 //getting records from the database......all of them?
 app.get('/getrecords', GetRecords)
@@ -212,6 +208,11 @@ let id = req.params.id
 app.get('/delete/:id', DeleteProduct)
 
 
+//request to add an order to the database
+app.post('/addOrder',imageUpload.single('image'), addOrder2)
+
+    //this is also for the orders but a get request
+app.get('/getOrders', GetOrders)
 
 //this is for the addition 
 
