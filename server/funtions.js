@@ -109,4 +109,18 @@ const GetOrders = (req, res) => {
         })
 }
 
-module.exports = { AddOrder, DeleteProduct, GetRecords, Auth, GetProd, addOrder2, GetOrders };
+const AulterData = (req, res) => {
+    let id = req.body.id
+    let value1 = req.body.values
+    let sql = `UPDATE orders SET status = '${value1}' WHERE orderid = ${id}`
+    let query = db.query(sql, (err, results) => {
+        if(err){
+            console.log(err)
+        } else {
+            res.send(results)
+            console.log('info changed')
+        }
+    })
+}
+
+module.exports = { AddOrder, DeleteProduct, GetRecords, Auth, GetProd, addOrder2, GetOrders, AulterData };

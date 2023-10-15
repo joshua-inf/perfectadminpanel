@@ -111,7 +111,7 @@ export const Home = () => {
                                             </div>
                                         </div>
                                     </Link>
-                                    <Link to='/Edit'>
+                                    <Link to='/Edit/addstock'>
                                         <div className='d-flex'>
                                             <AiOutlineFolderAdd className='fs-3'/>
                                             <div className='d-flex ps-3 d-none d-md-block flex-column justify-content-center white fw-bold'>

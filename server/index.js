@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const corse = require('cors');
 const multer = require('multer');
 const imageModel = require('./models');
-const { DeleteProduct, GetRecords, Auth, GetProd, addOrder, addOrder2, GetOrders } = require('./funtions');
+const { DeleteProduct, GetRecords, Auth, GetProd, addOrder, addOrder2, GetOrders, AulterData } = require('./funtions');
 const { db } = require('./database');
 const CreateTablesIfNotExits = require('./databaseTabels/CreateTables');
 
@@ -220,3 +220,5 @@ app.get('/getOrders', GetOrders)
 app.listen('4000', () => {
     console.log('listening on port 4000')
 })
+
+app.post('/UpateStatus', AulterData)
