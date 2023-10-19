@@ -7,9 +7,9 @@ const Checkcount = props => {
     const getStockCount = async () => {
         const resultes = await fetch('http://localhost:4000/getrecords')
         const resultesjson = await resultes.json()
-        const thatValue = resultesjson.filter((item) => item.productID == total)
+        const thatValue = resultesjson.filter((item) => item.productid == total)
         let thatTotal = 0
-        const addThoseValuesById = thatValue.forEach(item => thatTotal = thatTotal + Number(item.Quantity))
+        const addThoseValuesById = thatValue.forEach(item => thatTotal = thatTotal + Number(item.quantity))
         setValue(thatTotal)
 
     }
@@ -30,7 +30,7 @@ export const TotalStock = () => {
     
     const resultesjson = await resultes.json()
     let thatTotal = 0
-    const addThoseValuesById = resultesjson.forEach(item => thatTotal = thatTotal + Number(item.Quantity))
+    const addThoseValuesById = resultesjson.forEach(item => thatTotal = thatTotal + Number(item.quantity))
     setValue(thatTotal)
 }
 

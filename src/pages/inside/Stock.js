@@ -14,6 +14,7 @@ export const Stock = () => {
             const response = await fetch('http://localhost:4000/getData')
             const responsedta = await response.json();
             setDataa(responsedta)
+            console.log(responsedta)
         }
 
         getData()
@@ -29,19 +30,19 @@ export const Stock = () => {
                         <div className="col-md-4 col-xlg-1 col-lg-3 col-6">
                             <div className="border">
                                 <div className="bg-secondary text-center">
-                                    <img style={{maxHeight:'200px', maxWidth:'100%'}} src={`http://localhost:4000/getimg/` + e.productImagename} />
+                                    <img style={{maxHeight:'200px', maxWidth:'100%'}} src={`http://localhost:4000/getimg/` + e.productimagename} />
                                 </div>
                                 <div className="p-2">
                                     <div className="text-uppercase">
-                                        {e.productName}
+                                        {e.productname}
                                     </div>
                                     <div className="d-flex mt-3 justify-content-between">
                                         <div className="d-flex fw-bold">
                                             <BsFillFileBarGraphFill className="fs-4 text-dark " />
-                                            <div className=""><Checkcount name={e.productID}/></div>
+                                            <div className=""><Checkcount name={e.productid}/></div>
                                         </div>
                                         <div className="">
-                                            <Link to={'/Stock/' + e.productID} className="btn btn-outline-dark rounded-0 p-1 text-decoration-none">view</Link>
+                                            <Link to={'/Stock/' + e.productid} className="btn btn-outline-dark rounded-0 p-1 text-decoration-none">view</Link>
                                         </div>
                                     </div>
                                 </div>

@@ -6,7 +6,7 @@ const corse = require('cors');
 const multer = require('multer');
 const imageModel = require('./models');
 const { DeleteProduct, GetRecords, Auth, GetProd, addOrder, addOrder2, GetOrders, AulterData } = require('./funtions');
-const { db } = require('./database');
+const { db } = require('./postgresdb/databsepg.js');
 const CreateTablesIfNotExits = require('./databaseTabels/CreateTables');
 
 const corseOrigin = 'http://localhost:3000';
@@ -64,12 +64,11 @@ app.post('/upload-image', imageUpload.single('image'), (req, res) => {
     const nameofproduct = req.body.nameofproduct;
     const size = req.body.size;
     const image = req.file.filename; 
-    let query = db.query('insert into productdetails(productName, productSize, productImagename) values(?,?,?)', [nameofproduct, size, image], (err, result) => {
+    let query = db.query(`insert into productdetails(productName, productSize, productImagename) values('${nameofproduct}','${size}','${image}')`, (err, result) => {
         if(err){
             console.log(err)
         } else{
             res.send('posted')
-            console.log(res.body)
         }
     })
 })
@@ -92,32 +91,33 @@ app.post('/user', async (req, res) => {
 
         //this is the query made to the database
         let query = db.query(sql, (err, results) => {
-
             //this stateent checks if the response return an empty object or not
-            //if the obeject is empty, it sends back 404
+            // if the obeject is empty, it sends back 404
             //if the object is not empty then it proceeds
-            if(results != ''){
+            if(results.rows != ''){
                 //this block code of recieves user info, compares it with the database and generates a token
-                
-                //this section takes the specific info from the response and stores each in a constant
-                const username = results[0].username;
-                const password = results[0].password;
-                const role = results[0].role;
-                const userid = results[0].userid;
+                console.log(results.rows[0])
+                // this section takes the specific info from the response and stores each in a constant
+                const resusername = results.rows[0].username;
+                const respassword = results.rows[0].password;
+                const role = results.rows[0].role;
+                const userid = results.rows[0].userid;
                 
                 //this is an array created to store the info stored in the constant(response from database)
-                const userCredentials = {username, password}
-
+                const userCredentials = {resusername, respassword}
                 //the token being created with a secret
                 const token  = jwt.sign(userCredentials, 'twenty')
 
                 //resonse for the client
-                let response = {token, username, role, userid}
-                res.send(response)
-                console.log(req.body)
+                let response = {token,role, resusername, userid}
+                res.send(response.rows)
                 
                 //this adds the token to the database if all goes well
-                 let query = db.query('INSERT INTO tokken (tokken) values(?)', token)
+                 let query = db.query(`INSERT INTO tokken (tokken) values('${token}')`, (err, results) => {
+                    if(err){
+                        console.log(err)
+                    }
+                 })
             } else {
                 res.send('user info is invalid')
             }
@@ -137,22 +137,21 @@ app.post('/formData', fileUpload.single('file'), (req, res) => {
     const productID = req.body.productID;
     const Quantity = req.body.Quantity;
     const formID = req.body.formID;
-    
+
     let sql = `SELECT productID FROM productdetails WHERE productID = '${productID}'`
     let query = db.query(sql, (err, resp) => {
-        if(err){
+        if (err) {
             throw err
         }
-if(resp != ''){
-    let sql = 'INSERT INTO stockrecord (dateClient, productID, Quantity, FormID) values(?,?,?,?)'
-    let query = db.query(sql, [date, productID, Quantity, formID])
-    res.send('exits')
-} else {
-    res.send('the productID does not exist')
-    console.log('the productID does not exist')
-}
+        if (resp != '') {
+            let query = db.query(`INSERT INTO stockrecord (dateClient, productID, Quantity, FormID) values('${date}', '${productID}', '${Quantity}', '${formID}')`)
+            res.send('exits')
+        } else {
+            res.send('the productID does not exist')
+            console.log('the productID does not exist')
+        }
     })
-    
+
 })
 
 //getting records from the database......all of them?
@@ -173,11 +172,12 @@ app.post('/users/auth', Auth)
 app.post("/delete/tokken", (req, res) => {
     let tokken = req.body.tokken;
     let sql = `DELETE FROM tokken WHERE tokken = '${tokken}'`
+
     let query = db.query(sql, (err, result) => {
         if(err){
             throw err
         }
-        if(result.affectedRows > 0){
+        if(result.rowCount > 0){
             res.send('success')
         } else {
             res.send('fail')
@@ -199,7 +199,7 @@ let id = req.params.id
         if(err){
             throw err
         }
-        res.send(result)
+        res.send(result.rows)
     })
 })
 

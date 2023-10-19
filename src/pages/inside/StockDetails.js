@@ -46,7 +46,7 @@ export const ProDet = () => {
                                 <div className="col-4">
                                     <div>
                                         <div className="" style={{ height: '400px' }}>
-                                            <img style={{ maxWidth: '100%', maxHeight: '100%' }} src={`http://localhost:4000/getimg/` + e.productImagename} />
+                                            <img style={{ maxWidth: '100%', maxHeight: '100%' }} src={`http://localhost:4000/getimg/` + e.productimagename} />
                                         </div>
                                     </div>
                                 </div>
@@ -55,7 +55,7 @@ export const ProDet = () => {
                                         <div>
                                             <div className="d-flex justify-content-between">
                                             <div className="fw-bold text-uppercase display-3">
-                                                {e.productName}
+                                                {e.productname}
                                             </div>
                                             <div className="d-flex justify-content-end flex-column">
 
@@ -77,7 +77,7 @@ export const ProDet = () => {
                                                 </div>
                                                 <div className="d-flex my-2">
                                                     <h5>Size:</h5>
-                                                    {e.productSize}
+                                                    {e.productsize}
                                                 </div>
                                                 <div className="d-flex my-2">
                                                     <h5>Last update:</h5>

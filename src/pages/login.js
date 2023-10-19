@@ -36,18 +36,19 @@ const Login = () => {
         if (response) {
             // setAuth(true)
 
-            if (response.data == '') {
+            if (response.data == '' || response.data == 'user info is invalid') {
                 setError('please check inputs again')
             } else {
-                setUsername('')
-                setPassword('')
-                let data = response.data
-                localStorage.setItem('tokken', data.token)
-                localStorage.setItem('username', data.username)
-                localStorage.setItem('role', data.role)
-                localStorage.setItem('id', data.userid)
-
-                setAuth(true)
+                    setUsername('')
+                    setPassword('')
+                    let data = response.data
+                    console.log(data)
+                    localStorage.setItem('tokken', data.token)
+                    localStorage.setItem('username', data.resusername)
+                    localStorage.setItem('role', data.role)
+                    localStorage.setItem('id', data.userid)
+    
+                    setAuth(true)
             }
         }
 

@@ -69,10 +69,10 @@ const CreateOrder = () => {
                     {data.map((e) => (
                         <>
                             <tr>
-                                <td>{e.recordID}</td>
-                                <td>{e.Quantity}</td>
-                                <td>{e.dateClient}</td>
-                                <td>{e.productID}</td>
+                                <td>{e.recordid}</td>
+                                <td>{e.quantity}</td>
+                                <td>{e.dateclient}</td>
+                                <td>{e.productid}</td>
                                 <td>
                                     <button className="btn btn-info">view</button>
                                 </td>

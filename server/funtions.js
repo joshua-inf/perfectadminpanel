@@ -1,4 +1,4 @@
-const { db } = require("./database");
+const { db } = require("./postgresdb/databsepg.js");
 
 
 const AddOrder = (req, res) => {
@@ -14,7 +14,7 @@ const DeleteProduct = (req, res) => {
         if (err) {
             throw err
         }
-        res.send(result)
+        res.send(result.rows)
         console.log('deleted!')
     })
 }
@@ -26,28 +26,25 @@ const GetRecords = (req, res) => {
         if (err) {
             throw err;
         }
-        res.send(result)
+        res.send(result.rows)
     })
 }
 
 
 const Auth = (req, res) => {
-
-
     let tokken = req.body.value
     let sql = `SELECT * FROM tokken WHERE tokken = '${tokken}'`
-    let query = db.query(sql, (err, response) => {
-        if (response != '') {
-            let tokkens = response[0].tokken
+    db.query(sql, (err, response) => {
+        if (response.rows != '') {
+            let tokkens = response.rows[0].tokken
             if (err) {
                 throw err
             }
             if (tokkens == tokken) {
-                res.send('true')
+                res.send('value exists')
             }
         } else {
-            console.log('nothomh')
-            res.send('ok')
+            res.send('failed')
         }
 
     })
@@ -65,7 +62,7 @@ const GetProd = (req, res) => {
         if (err) {
             throw err;
         }
-        res.send(results)
+        res.send(results.rows)
     })
 }
 
@@ -81,10 +78,8 @@ const addOrder2 = (req, res) => {
     let creatorID = req.body.userID
     let status = 'intransit'
 
-    let values = [orderDate, client, approvedID, quantity, orderformID, productId, creatorID, status]
     if(orderDate && client && approvedID && quantity && orderformID && productId && creatorID && status){
-        let sql = 'INSERT INTO orders (orderDate, client, approvedID, quantity, orderformID, productId, creatorID, status) values (?,?,?,?,?,?,?,?)'
-        let query = db.query(sql, values, (err, result) => {
+        let query = db.query(`INSERT INTO orders (orderDate, client, approvedID, quantity, orderformID, productId, creatorID, status) values ('${orderDate}', '${client}', '${approvedID}', '${quantity}', '${orderformID}', '${productId}', '${creatorID}', '${status}')`, (err, result) => {
             if(err){
                 console.log(err)
             } else {
@@ -103,7 +98,7 @@ const GetOrders = (req, res) => {
             if(err){
                 console.log(err)
             } else {
-                res.send(results)
+                res.send(results.rows)
                 console.log('done')
             }
         })
@@ -117,10 +112,14 @@ const AulterData = (req, res) => {
         if(err){
             console.log(err)
         } else {
-            res.send(results)
+            res.send(results.rowa)
             console.log('info changed')
         }
     })
 }
 
+
+const GetSpecificOrder = () => {
+    
+}
 module.exports = { AddOrder, DeleteProduct, GetRecords, Auth, GetProd, addOrder2, GetOrders, AulterData };

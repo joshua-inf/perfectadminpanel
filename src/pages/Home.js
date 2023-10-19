@@ -26,11 +26,15 @@ export const Home = () => {
 
     let user = localStorage.getItem('username')
     let role = localStorage.getItem('role')
+
+    
     const logout = async () => {
         const tokken = localStorage.getItem('tokken')
         const response = await axios.post("http://localhost:4000/delete/tokken", { tokken })
+
         console.log(response.data)
         console.log('life')
+        
         if (response.data == 'success') {
             localStorage.removeItem('tokken')
             localStorage.removeItem('role')

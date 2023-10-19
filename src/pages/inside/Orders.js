@@ -66,7 +66,8 @@ const Orders = () => {
 
 
     const ShowDataFromOrders = () => {
-        return (
+        if(data.length > 0){
+             return (
             <>
                 {
                     data.filter((v) =>
@@ -77,7 +78,7 @@ const Orders = () => {
 
                         <>
                         <tr>
-                            <td colSpan={6}>
+                            <td colSpan={6} className="bg-white">
                                 <div className="d-flex justify-content-center text-center" style={{alignItems:'center'}}>
                                     <div>
                                         <img src={image} alt="image" width='300px'/>
@@ -99,10 +100,10 @@ const Orders = () => {
                                         <>
                                             <tr>
                                                 <td>
-                                                    {m.orderDate}
+                                                    {m.orderdate}
                                                 </td>
                                                 <td>{m.client}</td>
-                                                <td>{m.productId}</td>
+                                                <td>{m.productid}</td>
                                                 <td>{m.quantity}</td>
                                                 <td>{m.status}</td>
                                                 <td>
@@ -119,7 +120,23 @@ const Orders = () => {
                                 })}
             </>
         )
+        } else {
+            return(
+                <>
+                    <tr>
+                        <td colSpan={6} className="bg-danger text-white fw-bold text-center">
+                            No Records found
+                        </td>
+                    </tr>
+                </>
+            ) 
+        }
+
+       
     }
+
+
+
     return (
         <>
             <div>
